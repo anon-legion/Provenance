@@ -11,7 +11,7 @@ import modules as m
 
 class User(object):
     id_num = 1
-    types = ['normal', 'authenticator', 'admin']
+    types = ['normal', 'authenticator', 'admin']    # consider changing authenticator to 'organization', all users may authenticate
     def __init__(self, uName, pWord, email, uType='normal'):
         self.uName = uName
         self.pWord = pWord
@@ -80,8 +80,9 @@ class User(object):
 
 class Asset(object):
     index = 0
-    id_num = 1
+    id_num = 0
     def __init__(self, user, prov_date):
+        Asset.id_num += 1
         self.name = None
         self.provenance_date = prov_date
         self.ID = Asset.id_num
@@ -91,8 +92,7 @@ class Asset(object):
         self.owner = user.get_uID()
         self.asset_type = None
         self.index = Asset.index
-        self.active_status = True
-        Asset.id_num += 1
+        self.active_status = True        
         Asset.index += 1
         
     def __repr__(self):
@@ -165,14 +165,22 @@ class Asset(object):
    
 
 class Biological(Asset):
-    id_num = 1
+    id_num = 0
     types = ['feline']
     
     def __init__(self, user, prov_date):
-        Asset.__init__(self, user, prov_date)
-        self.ID = Biological.id_num
-        Asset.id_num -= 1
         Biological.id_num += 1
+        self.name = None
+        self.provenance_date = prov_date
+        self.ID = Asset.id_num
+        self.acquisition_date = dt.date(dt.now())
+        self.provenance = []        # eg. lineage of bio, or origin of art
+        self.history = []
+        self.owner = user.get_uID()
+        self.asset_type = None
+        self.index = Asset.index
+        self.active_status = True
+        Asset.index += 1
 
     
     def get_ID(self):

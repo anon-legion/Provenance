@@ -9,42 +9,44 @@ import classes
 import main
 import modules
 
-while True:
-    actions = ['register', 'login', 'exit']
-    print('\nSelect and action:')
-    for i in actions:
-        print(i)
-    action = input('What would you like to do?\n').lower()
+actions = ['register', 'login', 'exit']
+while action := input(f'Select and action:\n{[i for i in actions]}\n>>> ').lower():
     try:
         assert action in actions
         # register
         if action == actions[0]:
-            attempt = modules.register()
+            # valid registration
+            if attempt := modules.register():
+                # create new user in accounts.py users dict
+                accounts.users[f'{attempt[0]}'] = classes.User(*attempt)
+                del(attempt)
             # invalid registration
-            if attempt == False:
+            else:
                 del(attempt)
                 raise AssertionError
-            # valid registration
-            else:
-                accounts.users[f'{attempt[0]}'] = classes.User(*attempt)    # create new user in accounts.py users dict
-                del(attempt)
-        
-        if action == actions[1]:        # login
+
+        # login
+        if action == actions[1]:
             attempt = modules.login()
             if attempt[0] in accounts.users:
-                if accounts.users[attempt[0]].get_pWord() == attempt[-1]:   #successful login
+                #successful login
+                if accounts.users[attempt[0]].get_pWord() == attempt[-1]:
                     print('\nlogin successful!\n')
                     main.main(accounts.users[attempt[0]])
                     break
-                else:                   # invalid password
+                # invalid password
+                else:
                     print('\ninvalid password!\n')
-                    del(attempt)            
-            else:                       # invalid username
+                    del(attempt)
+            # invalid username
+            else:
                 print('username does not exist!')
                 del(attempt)
-                                    
-        elif action == actions[-1]:     # exit 
+                
+        # exit 
+        elif action == actions[-1]:
             print('\nThank you for using Provenance, good bye!\n')
+            del(action)
             break
     
     except:

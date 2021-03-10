@@ -17,8 +17,7 @@ def is_valid_uName(uName):
         return False
     
 def is_valid_pWord(pWord):
-    temp = input('re-enter password:\n')
-    if pWord == temp:
+    if input('re-enter password:\n>>> ') == pWord:
         return True
     else:
         return False
@@ -28,10 +27,10 @@ def is_valid_asset(asset):
 
 def register():
     try:
-        uName = input('input username:\n')
-        assert len(uName) > 2 and type(uName) == str and not uName in accounts.users
-        email = input('input email:\n')
-        pWord = input('input password:\n')
+        uName = input('input username:\n>>> ')
+        assert len(uName) > 2 and not uName in accounts.users
+        email = input('input email:\n>>> ')
+        pWord = input('input password:\n>>> ')
         if is_valid_pWord(pWord):
             return (uName, pWord, email)
         else:
@@ -41,8 +40,8 @@ def register():
 
 
 def login():
-        uName = input('input username:\n')
-        pWord = input('input password:\n')
+        uName = input('input username:\n>>> ')
+        pWord = input('input password:\n>>> ')
         return (uName, pWord)
 
 
@@ -55,11 +54,11 @@ def is_valid_day(year, month, day):
 
 def set_date():
     try:
-        year = input('input year (yyyy):\n')
+        year = input('input year (yyyy):\n>>> ')
         assert year.isnumeric() and 1 < int(year) <= dt.now().year
-        month = input('input month (mm):\n')
+        month = input('input month (mm):\n>>> ')
         assert month.isnumeric() and 1 <= int(month) <= 12
-        day = input('input day (dd):\n')
+        day = input('input day (dd):\n>>> ')
         assert day.isnumeric()
         if is_valid_day(int(year), int(month), int(day)):
             assert datetime.date(int(year), int(month), int(day)) <= dt.date(dt.now())

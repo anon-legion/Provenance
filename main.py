@@ -13,23 +13,15 @@ user_types = classes.User.types[:]  # ['normal', 'authenticator', 'admin']
 def normal(user):
     # print('in user console')
     actions = ['manage assets', 'exit']
-    while True:
-        print('\nSelect an action:')
-        for i in actions:
-            print(i)
-        action = input('What would you like to do?\n').lower()
+    while action := input(f'Select and action:\n{[i for i in actions]}\n>>> ').lower():        
         try:
             assert action in actions
             # manage_assets
             if action == actions[0]:
                 asset_actions = ['add', 'exit']
-                while True:
-                    print('\nManage assets\nSelect an action:')
-                    for i in asset_actions:
-                        print(i)
-                    action = input('What would you like to do?\n').lower()
-                    assert action in asset_actions
+                while action := input(f'Select and action:\n{[i for i in asset_actions]}\n>>> '):
                     try:
+                        assert action in asset_actions
                         # manage_assets/add
                         if action == asset_actions[0]:
                             print('\nSet date of provenance:')
@@ -50,13 +42,13 @@ def normal(user):
                         elif action == asset_actions[-1]:
                             break
                     except:
-                        pass
+                        print('\nInvalid Asset action!')
                     
             elif action == actions[-1]:         # exit
                 print('\nThank you for using Provenance, good bye!\n')
                 break
         except:
-            pass
+            print('\nInvalid')
 
 def main(user):
     if user.get_uType() == user_types[0]:       # normal
