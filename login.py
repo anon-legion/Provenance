@@ -17,12 +17,15 @@ while True:
     action = input('What would you like to do?\n').lower()
     try:
         assert action in actions
-        if action == actions[0]:        # register
+        # register
+        if action == actions[0]:
             attempt = modules.register()
-            if attempt == False:        # invalid registration
+            # invalid registration
+            if attempt == False:
                 del(attempt)
                 raise AssertionError
-            else:                       # valid registration
+            # valid registration
+            else:
                 accounts.users[f'{attempt[0]}'] = classes.User(*attempt)    # create new user in accounts.py users dict
                 del(attempt)
         
@@ -41,7 +44,7 @@ while True:
                 del(attempt)
                                     
         elif action == actions[-1]:     # exit 
-            print('\nThank you for using providence, good bye!\n')
+            print('\nThank you for using Provenance, good bye!\n')
             break
     
     except:

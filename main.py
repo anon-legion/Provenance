@@ -4,7 +4,9 @@ Created on Wed Mar  3 11:49:54 2021
 
 @author: =GV=
 """
+import accounts
 import classes
+import modules as m
 
 user_types = classes.User.types[:]  # ['normal', 'authenticator', 'admin']
 
@@ -18,25 +20,40 @@ def normal(user):
         action = input('What would you like to do?\n').lower()
         try:
             assert action in actions
-            if action == actions[0]:            # manage_assets
-                actons = ['add', 'exit']
+            # manage_assets
+            if action == actions[0]:
+                asset_actions = ['add', 'exit']
                 while True:
                     print('\nManage assets\nSelect an action:')
-                    for i in action:
+                    for i in asset_actions:
                         print(i)
                     action = input('What would you like to do?\n').lower()
-                    assert action in actions
+                    assert action in asset_actions
                     try:
-                        if action == actions[0]:    # manage_assets/add
-                            attempt = classes.Asset()
+                        # manage_assets/add
+                        if action == asset_actions[0]:
+                            print('\nSet date of provenance:')
+                            date = m.set_date()
+                            # invalid asset
+                            if date == False:
+                                del(attempt)
+                                raise AssertionError
+                            # valid asset
+                            else:
+                                attempt = classes.Biological(user, date)
+                                accounts.assets.append(attempt)
+                                m.add_asset(user, attempt.get_index())
+                                del(date, attempt)
+                                # assets not adding, check add_asset module
                         
-                        elif action == actions[-1]: # manage_assets/exit
+                        # manage_assets/exit
+                        elif action == asset_actions[-1]:
                             break
                     except:
                         pass
                     
             elif action == actions[-1]:         # exit
-                print('\nThank you for using providence, good bye!\n')
+                print('\nThank you for using Provenance, good bye!\n')
                 break
         except:
             pass

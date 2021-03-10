@@ -79,20 +79,27 @@ class User(object):
 
 
 class Asset(object):
+    index = 0
     id_num = 1
-    def __init__(self, prov_date):
+    def __init__(self, user, prov_date):
         self.name = None
         self.provenance_date = prov_date
         self.ID = Asset.id_num
         self.acquisition_date = dt.date(dt.now())
-        self.provenance = []
+        self.provenance = []        # eg. lineage of bio, or origin of art
+        self.history = []
+        self.owner = user.get_uID()
+        self.asset_type = None
+        self.index = Asset.index
+        self.active_status = True
         Asset.id_num += 1
+        Asset.index += 1
         
     def __repr__(self):
-        pass
+        return f'Asset({repr(self.get_name())}, {repr(self.get_provenance_date())})'
     
     def __str__(self):
-        pass
+        return f'ID:\t\t\t{self.get_ID()}\ntype:\t\t{self.get_type()}\nname:\t\t{self.get_name()}\nprovenance date:\t{self.get_provenance_date()}'
     
     def get_name(self):
         return self.name
@@ -109,22 +116,76 @@ class Asset(object):
     def get_provenance(self):
         return self.provenance
     
-    def set_name(self, name):
+    def get_history(self):
+        return self.history
+    
+    def get_owner(self):
+        return self.owner
+    
+    def get_type(self):
+        return self.asset_type
+    
+    def get_index(self):
+        return self.index
+    
+    def get_active_status(self):
+        return self.active_status
+    
+    def set_name(self, new_name):
         try:
-            assert name != self.name
-            self.name = name
+            assert new_name != self.name and new_name != ''
+            self.name = new_name
         except:
             return 'Invalid name!'
     
-    def set_provenance_date(self, year, month, day):
-        self.provenance_date = datetime.date(year, month, day)
+    def set_provenance_date(self, date):
+        self.provenance_date = date
         
-    def set_acquisition_date(self, year, month, day):
-        self.acquisition_date = datetime.date(year, month, day)
+    def set_acquisition_date(self, date):
+        self.acquisition_date = date
+        
+    def add_provenance(self, provenance):
+        self.provenance.append(provenance)
+        
+    def add_history(self, previous_owner):
+        self.history.append(previous_owner)
+        
+    def set_owner(self, owner):
+        self.owner = owner.get_uID()
+        
+    def set_asset_type(self, asset_type):
+        # assert asset_type in Asset.types
+        self.asset_type = asset_type
+        
+    def change_active_status(self):
+        if self.active_status == True:
+            self.active_status = False
+        else:
+            self.active_status = True
+   
+
+class Biological(Asset):
+    id_num = 1
+    types = ['feline']
     
-    # continue
-        
+    def __init__(self, user, prov_date):
+        Asset.__init__(self, user, prov_date)
+        self.ID = Biological.id_num
+        Asset.id_num -= 1
+        Biological.id_num += 1
+
+    
+    def get_ID(self):
+        return 'bio'+str(self.ID).zfill(10)
+    
+    def set_asset_type(self, asset_type):
+        try:
+            assert asset_type in Biological.types
+            self.asset_type = asset_type
+        except:
+            return 'Invalid type!'
+
 # class Exit(Exception):
-#     print('Thank you for using providence!\n')
+#     print('Thank you for using Provenance!\n')
 # test            
 # new_user = User('anon', 'password', 'email@dot.com', 'admin')

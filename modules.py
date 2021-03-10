@@ -45,11 +45,6 @@ def login():
         pWord = input('input password:\n')
         return (uName, pWord)
 
-def new_asset():
-    try:
-        age = input('input provenance date:\n')
-    except:
-        return False
 
 def is_valid_day(year, month, day):
     max_day = (datetime.date(year, (month + 1) % 12, 1) - datetime.timedelta(days=1)).day
@@ -67,9 +62,13 @@ def set_date():
         day = input('input day (dd):\n')
         assert day.isnumeric()
         if is_valid_day(int(year), int(month), int(day)):
-            return (int(year), int(month), int(day))
+            assert datetime.date(int(year), int(month), int(day)) <= dt.date(dt.now())
+            return datetime.date(int(year), int(month), int(day))
         else:
             raise AssertionError
     except:
         return False
-    
+
+
+def add_asset(user, asset_index):
+    user.add_asset(accounts.asset[asset_index])
