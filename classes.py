@@ -4,8 +4,7 @@ Created on Thu Feb 25 10:16:20 2021
 
 @author: =GV=
 """
-from datetime import datetime as dt
-import datetime
+import datetime as dt
 import modules as m
 
 
@@ -16,16 +15,16 @@ class User(object):
         self.uName = uName
         self.pWord = pWord
         self.email = email
-        self.uID = User.id_num
+        self.ID = User.id_num
         self.uType = uType
         self.assets = []
         User.id_num += 1
     
     def __repr__(self):
-        return f'User({repr(self.get_email())}, {repr(self.get_uID())})'
+        return f'User({repr(self.get_email())}, {repr(self.get_ID())})'
     
     def __str__(self):
-        return f'ID:\t\t\t{self.get_uID()}\nusername:\t{self.get_uName()}\nemail:\t\t{self.get_email()}\n'
+        return f'ID:\t\t\t{self.get_ID()}\nusername:\t{self.get_uName()}\nemail:\t\t{self.get_email()}\n'
     
     def get_uName(self):
         return self.uName
@@ -36,8 +35,8 @@ class User(object):
     def get_email(self):
         return self.email
     
-    def get_uID(self):
-        return str(self.uID).zfill(10)
+    def get_ID(self):
+        return str(self.ID).zfill(10)
     
     def get_uType(self):
         return self.uType
@@ -80,16 +79,16 @@ class User(object):
 
 class Asset(object):
     index = 0
-    id_num = 0
+    serial_num = 0
     def __init__(self, user, prov_date):
-        Asset.id_num += 1
+        Asset.serial_num += 1
         self.name = None
         self.provenance_date = prov_date
-        self.ID = Asset.id_num
-        self.acquisition_date = dt.date(dt.now())
+        self.SN = Asset.serial_num
+        self.acquisition_date = dt.datetime.date(dt.datetime.now())
         self.provenance = []        # eg. lineage of bio, or origin of art
         self.history = []
-        self.owner = user.get_uID()
+        self.owner = user.get_ID()
         self.asset_type = None
         self.index = Asset.index
         self.active_status = True        
@@ -99,19 +98,19 @@ class Asset(object):
         return f'Asset({repr(self.get_name())}, {repr(self.get_provenance_date())})'
     
     def __str__(self):
-        return f'ID:\t\t\t{self.get_ID()}\ntype:\t\t{self.get_type()}\nname:\t\t{self.get_name()}\nprovenance date:\t{self.get_provenance_date()}'
+        return f'ID:\t\t\t{self.get_SN()}\ntype:\t\t{self.get_type()}\nname:\t\t{self.get_name()}\nprovenance date:\t{self.get_provenance_date()}'
     
     def get_name(self):
         return self.name
     
     def get_provenance_date(self):
-        return dt.strftime(self.provenance_date, '%B %d, %Y')
+        return dt.datetime.strftime(self.provenance_date, '%B %d, %Y')
     
-    def get_ID(self):
-        return 'art'+str(self.ID).zfill(10)
+    def get_SN(self):
+        return 'art'+str(self.SN).zfill(10)
     
     def get_acquisition_date(self):
-        return dt.strftime(self.acquisition_date, '%B %d, %Y')
+        return dt.datetime.strftime(self.acquisition_date, '%B %d, %Y')
     
     def get_provenance(self):
         return self.provenance
@@ -151,7 +150,7 @@ class Asset(object):
         self.history.append(previous_owner)
         
     def set_owner(self, owner):
-        self.owner = owner.get_uID()
+        self.owner = owner.get_ID()
         
     def set_asset_type(self, asset_type):
         # assert asset_type in Asset.types
@@ -165,26 +164,26 @@ class Asset(object):
    
 
 class Biological(Asset):
-    id_num = 0
+    serial_num = 0
     types = ['feline']
     
     def __init__(self, user, prov_date):
-        Biological.id_num += 1
+        Biological.serial_num += 1
         self.name = None
         self.provenance_date = prov_date
-        self.ID = Asset.id_num
-        self.acquisition_date = dt.date(dt.now())
+        self.SN = Biological.serial_num
+        self.acquisition_date = dt.datetime.date(dt.datetime.now())
         self.provenance = []        # eg. lineage of bio, or origin of art
         self.history = []
-        self.owner = user.get_uID()
+        self.owner = user.get_ID()
         self.asset_type = None
         self.index = Asset.index
         self.active_status = True
         Asset.index += 1
 
     
-    def get_ID(self):
-        return 'bio'+str(self.ID).zfill(10)
+    def get_SN(self):
+        return 'bio'+str(self.SN).zfill(10)
     
     def set_asset_type(self, asset_type):
         try:

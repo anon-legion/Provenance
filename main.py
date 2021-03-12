@@ -26,17 +26,15 @@ def normal(user):
                         if action == asset_actions[0]:
                             print('\nSet date of provenance:')
                             date = m.set_date()
-                            # invalid asset
+                            # invalid date
                             if date == False:
                                 del(attempt)
                                 raise AssertionError
-                            # valid asset
+                            # valid date
                             else:
-                                attempt = classes.Biological(user, date)
-                                accounts.assets.append(attempt)
+                                accounts.assets.append(attempt := classes.Biological(user, date))
                                 m.add_asset(user, attempt.get_index())
                                 del(date, attempt)
-                                # assets not adding, check add_asset module
  
                     except:
                         print('\nInvalid Asset action!')

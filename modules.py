@@ -4,8 +4,7 @@ Created on Fri Feb 26 11:43:53 2021
 
 @author: =GV=
 """
-from datetime import datetime as dt
-import datetime
+import datetime as dt
 import accounts
 
 
@@ -46,7 +45,7 @@ def login():
 
 
 def is_valid_day(year, month, day):
-    max_day = (datetime.date(year, (month + 1) % 12, 1) - datetime.timedelta(days=1)).day
+    max_day = (dt.date(year, (month + 1) % 12, 1) - dt.timedelta(days=1)).day
     if 1 <= day <= max_day:
         return True
     else:
@@ -55,14 +54,14 @@ def is_valid_day(year, month, day):
 def set_date():
     try:
         year = input('input year (yyyy):\n>>> ')
-        assert year.isnumeric() and 1 < int(year) <= dt.now().year
+        assert year.isnumeric() and 1 < int(year) <= dt.datetime.now().year
         month = input('input month (mm):\n>>> ')
         assert month.isnumeric() and 1 <= int(month) <= 12
         day = input('input day (dd):\n>>> ')
         assert day.isnumeric()
         if is_valid_day(int(year), int(month), int(day)):
-            assert datetime.date(int(year), int(month), int(day)) <= dt.date(dt.now())
-            return datetime.date(int(year), int(month), int(day))
+            assert dt.date(int(year), int(month), int(day)) <= dt.datetime.date(dt.datetime.now())
+            return dt.date(int(year), int(month), int(day))
         else:
             raise AssertionError
     except:
@@ -70,4 +69,4 @@ def set_date():
 
 
 def add_asset(user, asset_index):
-    user.add_asset(accounts.asset[asset_index])
+    user.add_asset(accounts.assets[asset_index])
