@@ -10,7 +10,7 @@ import main
 import modules
 
 actions = ['register', 'login', 'exit']
-while (action := input(f'Select and action:\n{[i for i in actions]}\n>>> ').lower()) != actions[-1]:
+while (action := input(f'Select an action:\n{[action for action in actions]}\n>>> ').lower()) != actions[-1]:
     try:
         assert action in actions
         # register
@@ -36,7 +36,6 @@ while (action := input(f'Select and action:\n{[i for i in actions]}\n>>> ').lowe
             else:
                 print('Invalid login!')
                 del(attempt)
-                
     
     except:
         print('\nInvalid!\n')

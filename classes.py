@@ -44,6 +44,9 @@ class User(object):
     def get_assets(self):
         return self.assets
     
+    def get_types(self):
+        return User.types
+    
     def set_uName(self, new_uName):
         try:
             assert m.is_valid_uName(new_uName) and new_uName != self.uName
@@ -80,6 +83,7 @@ class User(object):
 class Asset(object):
     index = 0
     serial_num = 0
+    asset_class = 'art'
     def __init__(self, user, prov_date):
         Asset.serial_num += 1
         self.name = None
@@ -100,6 +104,7 @@ class Asset(object):
     def __str__(self):
         return f'ID:\t\t\t{self.get_SN()}\ntype:\t\t{self.get_type()}\nname:\t\t{self.get_name()}\nprovenance date:\t{self.get_provenance_date()}'
     
+    # getters
     def get_name(self):
         return self.name
     
@@ -130,6 +135,10 @@ class Asset(object):
     def get_active_status(self):
         return self.active_status
     
+    def get_asset_class(self):
+        return self.asset_class
+    
+    # setters
     def set_name(self, new_name):
         try:
             assert new_name != self.name and new_name != ''
@@ -165,12 +174,15 @@ class Asset(object):
 
 class Biological(Asset):
     serial_num = 0
-    types = ['feline']
+    types = ['feline', 'canine']
+    sexes = ['female', 'male']
+    asset_class = 'bio'
     
-    def __init__(self, user, prov_date):
+    def __init__(self, user, prov_date, sex):
         Biological.serial_num += 1
         self.name = None
         self.provenance_date = prov_date
+        self.sex = sex
         self.SN = Biological.serial_num
         self.acquisition_date = dt.datetime.date(dt.datetime.now())
         self.provenance = []        # eg. lineage of bio, or origin of art
@@ -180,17 +192,34 @@ class Biological(Asset):
         self.index = Asset.index
         self.active_status = True
         Asset.index += 1
+        
+    # getters
+    def get_sex(self):
+        return self.sex    
 
-    
     def get_SN(self):
         return 'bio'+str(self.SN).zfill(10)
     
+    def get_types(self):
+        return Biological.types
+    
+    def get_sexes(self):
+        return Biological.sexes
+    
+    # setters
     def set_asset_type(self, asset_type):
         try:
             assert asset_type in Biological.types
             self.asset_type = asset_type
         except:
             return 'Invalid type!'
+        
+    def set_sexes(self, sex):
+        try:
+            assert sex in Biological.sexes
+            self.sex = sex
+        except:
+            return 'Invalid sex!'
 
 # class Exit(Exception):
 #     print('Thank you for using Provenance!\n')

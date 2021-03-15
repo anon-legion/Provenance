@@ -8,18 +8,18 @@ import accounts
 import classes
 import modules as m
 
-user_types = classes.User.types[:]  # ['normal', 'authenticator', 'admin']
+user_types = classes.User.get_types(classes.User)[:]  # ['normal', 'authenticator', 'admin']
 
 def normal(user):
     # print('in user console')
     actions = ['manage assets', 'exit']
-    while (action := input(f'Select and action:\n{[i for i in actions]}\n>>> ').lower()) != actions[-1]:        
+    while (action := input(f'Select an action:\n{[action for action in actions]}\n>>> ').lower()) != actions[-1]:        
         try:
             assert action in actions
             # manage_assets
             if action == actions[0]:
                 asset_actions = ['add', 'exit']
-                while (action := input(f'Select and action:\n{[i for i in asset_actions]}\n>>> ').lower()) != asset_actions[-1]:
+                while (action := input(f'Select an action:\n{[action for action in asset_actions]}\n>>> ').lower()) != asset_actions[-1]:
                     try:
                         assert action in asset_actions
                         # manage_assets/add
@@ -32,7 +32,9 @@ def normal(user):
                                 raise AssertionError
                             # valid date
                             else:
+                                # created asset is stored in asset vault
                                 accounts.assets.append(attempt := classes.Biological(user, date))
+                                # asset is added to owners assets from asset vault
                                 m.add_asset(user, attempt.get_index())
                                 del(date, attempt)
  
